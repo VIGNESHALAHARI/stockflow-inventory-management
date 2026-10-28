@@ -6,9 +6,9 @@ load_dotenv()
 
 
 class Config:
+    # Secret key configuration
     SECRET_KEY = os.getenv("SECRET_KEY")
 
-    # Require a real secret key in production.
     if not SECRET_KEY:
         if os.getenv("APP_ENV", "development").lower() == "production":
             raise RuntimeError(
@@ -17,6 +17,7 @@ class Config:
 
         SECRET_KEY = "dev-only-secret-key-change-before-deployment"
 
+    # Database configuration
     DATABASE_URL = os.getenv(
         "DATABASE_URL",
         "sqlite:///stockflow.db",
@@ -30,9 +31,18 @@ class Config:
             1,
         )
 
+    # Explicitly use psycopg2 with PostgreSQL.
+    if DATABASE_URL.startswith("postgresql://"):
+        DATABASE_URL = DATABASE_URL.replace(
+            "postgresql://",
+            "postgresql+psycopg2://",
+            1,
+        )
+
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # Session cookie security
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
 
