@@ -1,104 +1,94 @@
 StockFlow – Inventory Management System
 
-StockFlow is a simple inventory management web application built to help small businesses keep track of their products and stock levels in one place.
+StockFlow is a lightweight inventory management web application built with Python and Flask. It helps small businesses manage products, track stock quantities, and identify items that need restocking.
 
-The idea behind this project is straightforward: business owners should be able to manage their inventory without depending on spreadsheets or manually checking every product. With StockFlow, users can add products, update quantities, monitor low-stock items, and view important inventory information from a dashboard.
+The application provides a dashboard for monitoring inventory, product search and management, and organization-level settings. Each organization manages its own products, keeping inventory data separated between accounts.
 
-I built this project as part of a software development assessment to demonstrate my understanding of Python, Flask, database management, authentication, CRUD operations, and web application development.
+This project was developed as part of a Software Development Engineer Intern assessment to demonstrate practical skills in backend development, database management, authentication, and CRUD operations.
 
 Features
 
 1. User Authentication
 
-- Create an account using an email address and password.
-- Register an organization during signup.
-- Log in and log out securely.
-- Protect pages that require authentication.
-- Store passwords as password hashes instead of plain text.
+- Register with an email address, password, and organization name.
+- Log in and log out.
+- Protect application pages that require authentication.
+- Store passwords as hashes rather than plain text.
 
 2. Organization-Based Inventory
 
-- Each user is associated with an organization.
-- Products belong to the organization that created them.
-- Users can manage their own organization's inventory.
-- Product queries are scoped to the logged-in user's organization to prevent access to other organizations' products.
+- Create an organization during registration.
+- Associate each user with an organization.
+- Restrict product operations to the logged-in user's organization.
+- Allow different organizations to use the same SKU independently.
 
 3. Product Management
 
-Users can create, view, update, and delete products.
+Create, view, update, search, and delete products.
 
-Each product can contain:
+Each product supports:
 
-- Product name
-- Stock Keeping Unit (SKU)
+- Product name and SKU
 - Description
-- Quantity available
-- Cost price
-- Selling price
-- Low-stock threshold
+- Available quantity
+- Cost price and selling price
+- Optional product-specific low-stock threshold
 - Creation and last-updated timestamps
 
-The application validates product information before saving it. For example, product names and SKUs are required, quantities cannot be negative, and duplicate SKUs are not allowed within the same organization.
+Product names and SKUs are required, quantities and thresholds cannot be negative, and duplicate SKUs are not allowed within the same organization.
 
 4. Inventory Dashboard
 
 The dashboard provides a quick overview of inventory, including:
 
 - Total number of products
-- Total units currently in stock
-- Number of low-stock products
-- A list of products that need attention
-
-This helps users understand their current stock situation without opening every product individually.
+- Total units in stock
+- Low-stock products
+- Product names, SKUs, quantities, and applicable thresholds for items requiring attention
 
 5. Low-Stock Monitoring
 
-StockFlow identifies products that have reached or fallen below their configured low-stock threshold.
+StockFlow identifies products whose available quantity is less than or equal to their effective low-stock threshold.
 
-For example, if a product has 8 units available and its threshold is 10, it appears in the low-stock list.
+Each product can have its own threshold. If no product-specific threshold is configured, the organization's default threshold is used.
 
-Users can set a threshold for an individual product. When no product-specific threshold is provided, the application uses the organization's default threshold.
+Example: If a product has 8 units in stock and its threshold is 10, it appears in the low-stock list.
 
 6. Product Search
 
-Users can search the product list by product name or SKU to find items more easily.
+Search the product list by product name or SKU to find inventory items quickly.
 
 7. Organization Settings
 
-Users can update their organization name and configure the default low-stock threshold.
+- Update the organization name.
+- Configure the default low-stock threshold.
+- Apply the default threshold to products without an individual threshold.
 
-This default is used for products that do not have an individual threshold configured.
+8. Input Validation
 
-8. Input Validation and Error Handling
+The application validates submitted data and handles common errors, including missing required fields, invalid quantities, invalid prices, negative thresholds, and duplicate SKUs within an organization.
 
-The application validates user input and handles common problems, including:
-
-- Missing required fields
-- Invalid or negative quantities
-- Invalid prices
-- Negative stock thresholds
-- Duplicate SKUs within an organization
-- Attempts to access products belonging to another organization
+---
 
 Technology Stack
 
 Technology| Purpose
 Python| Main programming language
 Flask| Web application framework
-Flask-Login| User authentication and session management
-Flask-SQLAlchemy| Database integration and ORM
+Flask-Login| Authentication and session management
+Flask-SQLAlchemy| Database integration
 SQLAlchemy| Database models, relationships, and queries
-SQLite| Database for local development
-Jinja2| Rendering dynamic HTML templates
+SQLite| Local development database
+Jinja2| Dynamic HTML template rendering
 HTML5| Web page structure
-CSS3| Styling and layout
-JavaScript| Client-side interactions
-Bootstrap| Responsive UI components, where used
+Bootstrap| UI components and responsive styling, where used
+CSS| Page styling
+JavaScript| Client-side interactions, where used
 python-dotenv| Loading environment variables from ".env"
 
 Project Structure
 
-wexa Ai sde ass/
+stockflow-inventory-management/
 ├── app/
 │   ├── __init__.py
 │   ├── models.py
@@ -111,55 +101,51 @@ wexa Ai sde ass/
 │       ├── products.html
 │       ├── product_form.html
 │       └── settings.html
-├── instance/
-│   └── stockflow.db
 ├── config.py
 ├── requirements.txt
 ├── run.py
-├── .env
 ├── .gitignore
 └── README.md
 
-Note: The ".env" file, virtual environment, and local database are excluded from Git. The structure above describes the intended project layout; optional files or folders may be absent if they have not been created.
+The ".env" file, virtual environment, and local database are excluded from version control. The database may be created automatically when the application initializes.
 
 Getting Started
 
-Follow these steps to run StockFlow on your local machine.
+Follow these steps to run StockFlow locally.
 
 Prerequisites
 
-Install the following:
+Install:
 
 - Python 3.10 or later
 - pip
+- Git
 - Visual Studio Code or another code editor (optional)
 
 1. Clone the Repository
 
-After the project has been pushed to GitHub, clone it using:
+git clone https://github.com/VIGNESHALAHARI/stockflow-inventory-management.git
+cd stockflow-inventory-management
 
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-cd "wexa Ai sde ass"
-
-Replace "<YOUR_GITHUB_REPOSITORY_URL>" with your actual repository URL.
-
-If you already have the project on your computer, open its folder in your terminal instead.
+If the repository is already cloned, open the project directory in your terminal instead.
 
 2. Create a Virtual Environment
 
-On Windows PowerShell:
+Windows PowerShell:
 
 python -m venv .venv
-
-Activate it:
-
 .\.venv\Scripts\Activate.ps1
 
-If PowerShell blocks script execution for this terminal session, run:
+If PowerShell blocks activation for the current session, run:
 
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 
-Then activate the environment again.
+Then activate the virtual environment again.
+
+macOS/Linux:
+
+python3 -m venv .venv
+source .venv/bin/activate
 
 3. Install Dependencies
 
@@ -167,19 +153,17 @@ python -m pip install -r requirements.txt
 
 4. Configure Environment Variables
 
-Create a ".env" file in the project root.
+Create a ".env" file in the project root and configure a secret key:
 
-Add a secret key:
+SECRET_KEY=replace-with-a-strong-random-secret
 
-SECRET_KEY=replace-this-with-a-long-random-secret-key
+Use a strong, randomly generated value. Never commit your actual ".env" file or expose your secret key publicly.
 
-Use a strong, randomly generated secret key for your own environment. Do not commit your real ".env" file or share your secret key publicly.
+For local development, StockFlow uses SQLite by default.
 
-For local development, the application uses SQLite by default. A separate database configuration is not required for the standard local setup.
+5. Run the Application
 
-5. Start the Application
-
-From the project root, run:
+From the project root, execute:
 
 python run.py
 
@@ -187,132 +171,118 @@ Open your browser and visit:
 
 http://127.0.0.1:5000
 
-The application creates its database tables when it initializes, if they do not already exist.
+The application initializes its database tables when it starts, if they do not already exist.
 
 6. Create an Account
 
 1. Open the signup page.
 2. Enter your email address and password.
-3. Provide your organization name.
-4. Complete registration.
-5. Log in and start managing products.
+3. Provide an organization name.
+4. Complete registration and log in.
+5. Start adding and managing products.
 
-How to Use StockFlow
+Using StockFlow
 
 Add a Product
 
-Open the Products page and choose the option to add a product. Enter its name, SKU, quantity, and any optional pricing or threshold information.
+Open the Products page and select the option to add a product. Enter its name, SKU, and quantity. You can also provide a description, prices, and a custom low-stock threshold.
 
-Update Stock
+Update Inventory
 
-Open an existing product and update its quantity or other details. Save the changes to update the inventory.
+Open an existing product, change its quantity or other details, and save your changes.
 
-Find Products
+Search Products
 
-Use the product search field to locate a product by name or SKU.
+Use the search field to find products by name or SKU.
 
 Monitor Low Stock
 
-Open the dashboard to see products whose quantities have reached or fallen below their effective low-stock thresholds.
+Check the dashboard for products whose quantities have reached or fallen below their effective thresholds.
 
-Change the Default Threshold
+Change Organization Settings
 
-Open Settings and update the organization's default low-stock threshold. Products without their own threshold use this value.
+Open Settings to update the organization name or default low-stock threshold.
 
 Delete a Product
 
-Choose the delete action for the relevant product and confirm the deletion when prompted.
+Select the delete action for the relevant product and confirm the deletion when prompted.
 
 Database Design
 
-StockFlow uses three main database models.
+StockFlow uses three main models.
 
-Organization
+Model| Purpose
+"Organization"| Stores the organization name and default low-stock threshold.
+"User"| Stores account details, password hashes, and the associated organization.
+"Product"| Stores product information, quantities, pricing, thresholds, and timestamps.
 
-Stores organization information, including:
+Each product belongs to an organization. SKU uniqueness is enforced within an organization rather than across the entire application.
 
-- Organization ID
-- Organization name
-- Default low-stock threshold
-- Creation timestamp
+Security and Validation
 
-User
-
-Stores user account information, including:
-
-- User ID
-- Email address
-- Password hash
-- Associated organization ID
-- Creation timestamp
-
-Product
-
-Stores inventory information, including:
-
-- Product ID
-- Associated organization ID
-- Product name and SKU
-- Description
-- Quantity on hand
-- Cost and selling prices
-- Optional product-specific low-stock threshold
-- Creation and update timestamps
-
-Each product is associated with an organization. The SKU is unique within that organization, allowing two different organizations to use the same SKU without conflicting with each other.
-
-Validation and Data Protection
-
-StockFlow includes several basic safeguards:
+The application includes several basic safeguards:
 
 - Passwords are stored as hashes.
-- Authentication is required for protected application pages.
-- Product access is restricted to the logged-in user's organization.
-- Product names and SKUs are required.
-- Quantities and configured thresholds cannot be negative.
-- Prices must be valid, non-negative numeric values when provided.
-- Duplicate SKUs are rejected within an organization.
-- Environment secrets and local database files are excluded from Git.
+- Authentication is required for protected pages.
+- Product operations are scoped to the current user's organization.
+- Required fields are validated.
+- Negative quantities and thresholds are rejected.
+- Prices are validated when provided.
+- Duplicate SKUs within an organization are rejected.
+- Environment files and local database files are excluded from Git.
 
-These measures are intended for a small assessment project. A production deployment would require additional security review and operational configuration.
+These safeguards support the scope of this assessment. Additional security review and production configuration would be necessary before using the application with sensitive business data.
 
-Current Scope and Limitations
+Scope and Limitations
 
-StockFlow focuses on the core inventory-management requirements.
+StockFlow focuses on the core inventory management requirements of the assessment.
 
-The current design assumes one user per organization and one inventory location. It does not include advanced role management, warehouse management, stock movement history, purchase orders, supplier management, billing, or external integrations.
+The current scope does not include:
 
-The project uses SQLite for local development. The database and deployment configuration should be reviewed before using the application with real business data.
+- Multiple warehouse or inventory locations
+- Purchase orders or supplier management
+- Stock movement history
+- Advanced user roles and permissions
+- Billing or external integrations
+
+The application uses SQLite for local development. A deployed version must use a database configuration suitable for its hosting environment and data-persistence requirements.
 
 Future Improvements
 
-Possible improvements include:
+Potential improvements include:
 
 - Automated tests for authentication and inventory operations
 - Pagination for larger product lists
-- More advanced search and filtering
+- Advanced search and filtering
 - Stock movement history
 - CSV import and export
-- Multiple users per organization
-- Improved production logging and monitoring
-- Additional security hardening
+- Support for multiple users per organization
+- Production logging and monitoring
 
-These are potential future enhancements and are not claims about functionality currently implemented.
+These are possible future enhancements and are not represented as existing features.
 
-What I Learned
+What This Project Demonstrates
 
-Working on StockFlow has helped me apply Python and Flask concepts to a practical web application. It brings together authentication, database relationships, form validation, CRUD operations, organization-based data separation, and dashboard calculations in one project.
+StockFlow brings together several practical web development concepts:
 
-It has also helped me understand how individual backend features work together to support a complete application.
+- Building web routes with Flask
+- Managing authentication and sessions
+- Designing relational database models
+- Implementing CRUD operations
+- Validating user input
+- Separating organization-specific data
+- Calculating and displaying inventory metrics
+
+The goal is to provide a simple, usable inventory management application while demonstrating how these components work together in a real project.
 
 Author
 
-ALAHARI GOVINDA SAI VIGNESWAR
+Alahari Govinda Sai Vigneswar
 
-Software Development Intern Candidate
+Software Development Engineer Intern Candidate
 
 GitHub: https://github.com/VIGNESHALAHARI
 
 License
 
-This project was developed for a software development assessment. Add a formal open-source license only if you intend to distribute the project under that license.
+Developed for a software development assessment. No open-source license has been specified.
