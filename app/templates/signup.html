@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account | StockFlow{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+
+            <div class="card shadow border-0">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold">Create Your Account</h2>
+                        <p class="text-muted">
+                            Get started with StockFlow Inventory Management
+                        </p>
+                    </div>
+
+                    <form method="POST" action="{{ url_for('main.signup') }}">
+
+                        <div class="mb-3">
+                            <label for="organization_name" class="form-label">
+                                Organization Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="organization_name"
+                                name="organization_name"
+                                placeholder="Enter your organization name"
+                                maxlength="150"
+                                required
+                            >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">
+                                Email Address *
+                            </label>
+
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                maxlength="255"
+                                required
+                            >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                Password *
+                            </label>
+
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="password"
+                                name="password"
+                                placeholder="Minimum 8 characters"
+                                minlength="8"
+                                required
+                            >
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="confirm_password" class="form-label">
+                                Confirm Password *
+                            </label>
+
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="confirm_password"
+                                name="confirm_password"
+                                placeholder="Re-enter your password"
+                                minlength="8"
+                                required
+                            >
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            Create Account
+                        </button>
+
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <span class="text-muted">Already have an account?</span>
+                        <a href="{{ url_for('main.login') }}"
+                           class="text-decoration-none fw-semibold">
+                            Login
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

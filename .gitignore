@@ -1,0 +1,33 @@
+Python cache files
+
+pycache/
+*.py[cod]
+
+Virtual environments
+
+.venv/
+venv/
+env/
+
+Environment variables and secrets
+
+.env
+.env.*
+!.env.example
+
+Local databases and instance files
+
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+Flask cache
+
+.webassets-cache/
+
+IDE and operating system files
+
+.vscode/
+.DS_Store
+Thumbs.db

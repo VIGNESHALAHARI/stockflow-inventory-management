@@ -1,0 +1,527 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | StockFlow{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f6f7fb !important;
+        color: #1e293b;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .dashboard-wrapper {
+        padding: 16px 4px 35px;
+    }
+
+    .welcome-heading {
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 800;
+        color: #172033;
+    }
+
+    .welcome-subtitle {
+        color: #64748b;
+        font-size: 0.94rem;
+    }
+
+    .btn-primary-custom {
+        background: linear-gradient(135deg, #635bff, #8b5cf6);
+        border: none;
+        color: white;
+        border-radius: 11px;
+        padding: 12px 18px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.25s;
+    }
+
+    .btn-primary-custom:hover {
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(99, 91, 255, 0.25);
+    }
+
+    .stat-card {
+        background: white;
+        border: 1px solid #edf0f7;
+        border-radius: 18px;
+        padding: 23px;
+        height: 100%;
+        transition: 0.25s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(30, 41, 59, 0.08);
+    }
+
+    .stat-label {
+        color: #64748b;
+        font-size: 0.88rem;
+        font-weight: 600;
+    }
+
+    .stat-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.4rem;
+    }
+
+    .purple {
+        background: #eeedff;
+        color: #635bff;
+    }
+
+    .blue {
+        background: #e8f1ff;
+        color: #2563eb;
+    }
+
+    .orange {
+        background: #fff0e5;
+        color: #ea580c;
+    }
+
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin: 18px 0 5px;
+        color: #172033;
+    }
+
+    .stat-caption {
+        color: #64748b;
+        font-size: 0.82rem;
+    }
+
+    .dashboard-panel {
+        background: white;
+        border: 1px solid #edf0f7;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .panel-header {
+        padding: 22px;
+        border-bottom: 1px solid #edf0f7;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .panel-title {
+        font-size: 1.05rem;
+        font-weight: 750;
+        margin: 0;
+    }
+
+    .panel-description {
+        color: #64748b;
+        font-size: 0.83rem;
+        margin: 5px 0 0;
+    }
+
+    .view-all-link {
+        color: #635bff;
+        text-decoration: none;
+        font-weight: 650;
+    }
+
+    .inventory-table {
+        margin-bottom: 0;
+        min-width: 600px;
+    }
+
+    .inventory-table thead th {
+        background: #fafbff;
+        color: #64748b;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        padding: 15px 20px;
+        white-space: nowrap;
+    }
+
+    .inventory-table tbody td {
+        padding: 17px 20px;
+        vertical-align: middle;
+    }
+
+    .product-name {
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .sku-label {
+        color: #64748b;
+        font-size: 0.82rem;
+    }
+
+    .stock-badge {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .badge-low {
+        background: #fff0e5;
+        color: #c2410c;
+    }
+
+    .badge-out {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 45px 20px;
+    }
+
+    .empty-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 22px;
+        background: #eeedff;
+        color: #635bff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 18px;
+    }
+
+    .quick-action {
+        border: 1px solid #edf0f7;
+        background: white;
+        border-radius: 15px;
+        padding: 19px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        height: 100%;
+        color: #1e293b;
+        transition: 0.25s;
+    }
+
+    .quick-action:hover {
+        border-color: #c7c4ff;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(30, 41, 59, 0.06);
+        color: #1e293b;
+    }
+
+    .quick-action h6 {
+        font-weight: 750;
+        margin-bottom: 5px;
+    }
+
+    .quick-action p {
+        color: #64748b;
+        font-size: 0.8rem;
+        margin: 0;
+    }
+
+    .dashboard-footer {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.8rem;
+        padding-top: 25px;
+    }
+
+    @media (max-width: 767px) {
+        .stat-card {
+            padding: 18px;
+        }
+
+        .stat-number {
+            font-size: 1.9rem;
+        }
+
+        .panel-header {
+            padding: 17px;
+        }
+    }
+</style>
+
+<div class="dashboard-wrapper">
+
+    <!-- Welcome Header -->
+    <section class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+        <div>
+            <h1 class="welcome-heading mb-2">
+                Welcome to StockFlow 👋
+            </h1>
+
+            <p class="welcome-subtitle mb-0">
+                Here's your inventory overview for
+                <strong>{{ organization.name }}</strong>.
+            </p>
+        </div>
+
+        <a href="{{ url_for('main.add_product') }}"
+           class="btn-primary-custom">
+            + Add New Product
+        </a>
+
+    </section>
+
+    <!-- Statistics Cards -->
+    <section class="row g-3 g-lg-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="stat-card">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="stat-label">Total Products</span>
+                    <div class="stat-icon purple">▦</div>
+                </div>
+
+                <div class="stat-number">{{ total_products }}</div>
+
+                <div class="stat-caption">
+                    Unique products in inventory
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="stat-label">Total Units in Stock</span>
+                    <div class="stat-icon blue">📦</div>
+                </div>
+
+                <div class="stat-number">{{ total_quantity }}</div>
+
+                <div class="stat-caption">
+                    Combined quantity of all products
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="stat-label">Low Stock Alerts</span>
+                    <div class="stat-icon orange">⚠️</div>
+                </div>
+
+                <div class="stat-number">
+                    {{ low_stock_products|length }}
+                </div>
+
+                <div class="stat-caption">
+                    Products needing attention
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Low Stock Alerts -->
+    <section class="dashboard-panel mb-4">
+
+        <div class="panel-header">
+
+            <div>
+                <h5 class="panel-title">Inventory Alerts</h5>
+
+                <p class="panel-description">
+                    Products that may need restocking.
+                </p>
+            </div>
+
+            <a href="{{ url_for('main.products') }}"
+               class="view-all-link">
+                View all products →
+            </a>
+
+        </div>
+
+        {% if low_stock_products %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover inventory-table">
+
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>SKU</th>
+                            <th>Available Stock</th>
+                            <th>Threshold</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for product in low_stock_products %}
+
+                            <tr>
+
+                                <td>
+                                    <div class="product-name">
+                                        {{ product.name }}
+                                    </div>
+
+                                    {% if product.description %}
+                                        <div class="sku-label">
+                                            {{ product.description|truncate(40) }}
+                                        </div>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <span class="sku-label">
+                                        {{ product.sku }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        {{ product.quantity_on_hand }}
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    {{ product.effective_low_stock_threshold }}
+                                </td>
+
+                                <td>
+
+                                    {% if product.quantity_on_hand == 0 %}
+
+                                        <span class="stock-badge badge-out">
+                                            ● Out of Stock
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="stock-badge badge-low">
+                                            ● Low Stock
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">✓</div>
+
+                <h5 class="fw-bold">You're all stocked up!</h5>
+
+                <p class="text-muted">
+                    No low-stock products found.
+                    Add your first product to start tracking inventory.
+                </p>
+
+                <a href="{{ url_for('main.add_product') }}"
+                   class="btn-primary-custom mt-2">
+                    + Add Your First Product
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="mb-4">
+
+        <div class="mb-3">
+            <h5 class="panel-title">Quick Actions</h5>
+
+            <p class="panel-description">
+                Common inventory tasks, right at your fingertips.
+            </p>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <a href="{{ url_for('main.add_product') }}"
+                   class="quick-action">
+
+                    <div class="stat-icon purple">＋</div>
+
+                    <div>
+                        <h6>Add Product</h6>
+                        <p>Create a new inventory item.</p>
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="{{ url_for('main.products') }}"
+                   class="quick-action">
+
+                    <div class="stat-icon blue">▤</div>
+
+                    <div>
+                        <h6>Manage Inventory</h6>
+                        <p>View and update your products.</p>
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="{{ url_for('main.settings') }}"
+                   class="quick-action">
+
+                    <div class="stat-icon orange">⚙</div>
+
+                    <div>
+                        <h6>Organization Settings</h6>
+                        <p>Update inventory preferences.</p>
+                    </div>
+
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="dashboard-footer">
+        StockFlow Inventory Management · Your stock, under control.
+    </div>
+
+</div>
+
+{% endblock %}

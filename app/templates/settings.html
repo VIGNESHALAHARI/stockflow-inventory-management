@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Settings | StockFlow{% endblock %}
+
+{% block content %}
+
+<style>
+    .settings-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px 0 40px;
+    }
+
+    .settings-heading {
+        margin-bottom: 28px;
+    }
+
+    .settings-heading h1 {
+        font-weight: 800;
+        color: #172033;
+        margin-bottom: 8px;
+    }
+
+    .settings-heading p {
+        color: #64748b;
+        margin: 0;
+    }
+
+    .settings-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 22px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .settings-card h3 {
+        font-size: 19px;
+        font-weight: 750;
+        color: #1e293b;
+        margin-bottom: 8px;
+    }
+
+    .settings-description {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+
+    .settings-label {
+        font-weight: 650;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+    .settings-input {
+        width: 100%;
+        min-height: 48px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 12px 14px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .settings-input:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
+
+    .settings-help {
+        display: block;
+        margin-top: 8px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .settings-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: #eef2ff;
+        color: #4f46e5;
+        font-size: 20px;
+        margin-bottom: 14px;
+    }
+
+    .settings-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 24px;
+    }
+
+    .save-button {
+        border: 0;
+        border-radius: 10px;
+        background: #4f46e5;
+        color: white;
+        font-weight: 700;
+        padding: 13px 24px;
+        cursor: pointer;
+    }
+
+    .save-button:hover {
+        background: #4338ca;
+    }
+
+    .settings-note {
+        border-radius: 12px;
+        padding: 15px 17px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 576px) {
+        .settings-card {
+            padding: 20px;
+        }
+
+        .settings-actions .save-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="settings-wrapper">
+
+    <div class="settings-heading">
+        <h1>⚙️ Settings</h1>
+        <p>Manage your organization and inventory preferences.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('main.settings') }}">
+
+        <div class="settings-card">
+
+            <div class="settings-icon">🏢</div>
+
+            <h3>Organization Details</h3>
+
+            <p class="settings-description">
+                Update the organization name associated with your StockFlow workspace.
+            </p>
+
+            <div class="mb-3">
+
+                <label
+                    for="organization_name"
+                    class="form-label settings-label"
+                >
+                    Organization Name <span class="text-danger">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="organization_name"
+                    name="organization_name"
+                    class="settings-input"
+                    value="{{ current_user.organization.name }}"
+                    maxlength="150"
+                    required
+                >
+
+                <small class="settings-help">
+                    This name identifies your organization's inventory workspace.
+                </small>
+
+            </div>
+
+        </div>
+
+        <div class="settings-card">
+
+            <div class="settings-icon">📦</div>
+
+            <h3>Inventory Preferences</h3>
+
+            <p class="settings-description">
+                Choose the default stock level at which products should be marked as low stock.
+            </p>
+
+            <div class="mb-3">
+
+                <label
+                    for="default_low_stock_threshold"
+                    class="form-label settings-label"
+                >
+                    Default Low-Stock Threshold
+                    <span class="text-danger">*</span>
+                </label>
+
+                <input
+                    type="number"
+                    id="default_low_stock_threshold"
+                    name="default_low_stock_threshold"
+                    class="settings-input"
+                    value="{{ current_user.organization.default_low_stock_threshold }}"
+                    min="0"
+                    step="1"
+                    required
+                >
+
+                <small class="settings-help">
+                    Example: If you set this to 5, products with 5 or fewer units
+                    will be marked as low stock unless a product has its own threshold.
+                </small>
+
+            </div>
+
+        </div>
+
+        <div class="settings-note">
+            <strong>How this works:</strong>
+            The default threshold applies to products that don't have a custom
+            low-stock threshold. A product-specific threshold takes priority.
+        </div>
+
+        <div class="settings-actions">
+
+            <button type="submit" class="save-button">
+                💾 Save Settings
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
