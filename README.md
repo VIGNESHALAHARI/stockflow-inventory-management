@@ -155,7 +155,7 @@ python -m pip install -r requirements.txt
 
 Create a ".env" file in the project root and configure a secret key:
 
-SECRET_KEY=replace-with-a-strong-random-secret
+SECRET_KEY= I-AM-BATMAN
 
 Use a strong, randomly generated value. Never commit your actual ".env" file or expose your secret key publicly.
 
